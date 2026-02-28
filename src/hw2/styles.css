@@ -1,0 +1,15 @@
+body {
+	margin: 0;
+}
+canvas {
+	display: block;
+}
+#controls {
+	position: absolute;
+	left: 300px;
+	z-index: 100;
+}
+
+button {
+	margin: 2px;
+}
