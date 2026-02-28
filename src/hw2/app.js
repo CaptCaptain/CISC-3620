@@ -8,6 +8,10 @@ document.body.appendChild(renderer.domElement);
 camera.position.z = 5;
 
 // CREATE YOUR CUBE HERE
+const geometry = new THREE.BoxGeometry(2, 2, 2);
+const material = new THREE.MeshBasicMaterial();
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
 
 let wireframe = false;
 let angleX = 0; // Rotation around the X-axis
