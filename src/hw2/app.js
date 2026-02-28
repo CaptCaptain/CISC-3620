@@ -26,7 +26,20 @@ window.addEventListener("keydown", onKeyDown);
 
 // Rotate the cube based on button clicks
 function rotateCube(direction) {
-	// WRITE YOUR CODE HERE
+	switch (direction) {
+		case "up":
+			cube.rotation.x += 0.1;
+			break;
+		case "down":
+			cube.rotation.x -= 0.1;
+			break;
+		case "left":
+			cube.rotation.y += 0.1;
+			break;
+		case "right":
+			cube.rotation.y -= 0.1;
+			break;
+	}
 }
 
 // Function to toggle wireframe
