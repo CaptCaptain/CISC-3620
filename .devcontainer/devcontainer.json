@@ -9,11 +9,17 @@
 	},
 	"customizations": {
 		"vscode": {
-			"extensions": [
-				"ritwickdey.LiveServer"
-			]
+			"extensions": ["ritwickdey.LiveServer"]
 		}
-	}
+	},
+
+	"remoteUser": "node",
+
+	"mounts": [
+		"source=${localWorkspaceFolderBasename}-git,target=${containerWorkspaceFolder}/.git,type=volume"
+	],
+
+	"postCreateCommand": "sudo chown -R node .git"
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
