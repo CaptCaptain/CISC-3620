@@ -11,15 +11,7 @@
 		"vscode": {
 			"extensions": ["ms-vscode.live-server"]
 		}
-	},
-
-	"remoteUser": "node",
-	"mounts": [
-		"source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind"
-	],
-	"workspaceMount": "source=${localWorkspaceFolderBasename},target=/workspace/${localWorkspaceFolderBasename},type=volume",
-	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
-	"postCreateCommand": "sudo chown -R node /workspace"
+	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
