@@ -19,8 +19,8 @@ const cube_materials = [
 ];
 const wireframe_material = new THREE.MeshBasicMaterial({ wireframe: true });
 
-const cube = new THREE.Mesh(geometry, materials);
-const cube_wireframe = new THREE.Mesh(geometry, material);
+const cube = new THREE.Mesh(geometry, cube_materials);
+const cube_wireframe = new THREE.Mesh(geometry, wireframe_material);
 scene.add(cube);
 
 let wireframe = false;
