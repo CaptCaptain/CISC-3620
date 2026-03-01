@@ -9,8 +9,7 @@ camera.position.z = 5;
 
 // CREATE YOUR CUBE HERE
 const geometry = new THREE.BoxGeometry(2, 2, 2);
-const material = new THREE.MeshBasicMaterial({ wireframe: true });
-const materials = [
+const cube_materials = [
 	new THREE.MeshBasicMaterial({ color: "green" }),
 	new THREE.MeshBasicMaterial({ color: "blue" }),
 	new THREE.MeshBasicMaterial({ color: "red" }),
@@ -18,6 +17,8 @@ const materials = [
 	new THREE.MeshBasicMaterial({ color: "orange" }),
 	new THREE.MeshBasicMaterial({ color: "purple" }),
 ];
+const wireframe_material = new THREE.MeshBasicMaterial({ wireframe: true });
+
 const cube = new THREE.Mesh(geometry, materials);
 const cube_wireframe = new THREE.Mesh(geometry, material);
 scene.add(cube);
