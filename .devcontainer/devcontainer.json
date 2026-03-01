@@ -11,7 +11,14 @@
 		"vscode": {
 			"extensions": ["ms-vscode.live-server"]
 		}
-	}
+	},
+	"postStartCommand": "bash .devcontainer/setup.sh",
+	"remoteUser": "root",
+	"workspaceMount": "source=${localWorkspaceFolderBasename},target=/workspace/${localWorkspaceFolderBasename},type=volume",
+	"workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+	"mounts": [
+		"source=${localWorkspaceFolder}/.devcontainer,target=${containerWorkspaceFolder}/.devcontainer,type=bind"
+	]
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
