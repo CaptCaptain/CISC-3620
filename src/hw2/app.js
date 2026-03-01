@@ -51,12 +51,12 @@ window.addEventListener("keydown", onKeyDown);
 function rotateCube(direction) {
 	switch (direction) {
 		case "up":
-			cube.rotation.x += 0.1;
-			cube_wireframe.rotation.x += 0.1;
-			break;
-		case "down":
 			cube.rotation.x -= 0.1;
 			cube_wireframe.rotation.x -= 0.1;
+			break;
+		case "down":
+			cube.rotation.x += 0.1;
+			cube_wireframe.rotation.x += 0.1;
 			break;
 		case "left":
 			cube.rotation.y += 0.1;
