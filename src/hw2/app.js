@@ -9,8 +9,17 @@ camera.position.z = 5;
 
 // CREATE YOUR CUBE HERE
 const geometry = new THREE.BoxGeometry(2, 2, 2);
-const material = new THREE.MeshBasicMaterial();
-const cube = new THREE.Mesh(geometry, material);
+const material = new THREE.MeshBasicMaterial({ wireframe: true });
+const materials = [
+	new THREE.MeshBasicMaterial({ color: "green" }),
+	new THREE.MeshBasicMaterial({ color: "blue" }),
+	new THREE.MeshBasicMaterial({ color: "red" }),
+	new THREE.MeshBasicMaterial({ color: "yellow" }),
+	new THREE.MeshBasicMaterial({ color: "orange" }),
+	new THREE.MeshBasicMaterial({ color: "purple" }),
+];
+const cube = new THREE.Mesh(geometry, materials);
+const cube_wireframe = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 let wireframe = false;
@@ -42,15 +51,19 @@ function rotateCube(direction) {
 	switch (direction) {
 		case "up":
 			cube.rotation.x += 0.1;
+			cube_wireframe.rotation.x += 0.1;
 			break;
 		case "down":
 			cube.rotation.x -= 0.1;
+			cube_wireframe.rotation.x -= 0.1;
 			break;
 		case "left":
 			cube.rotation.y += 0.1;
+			cube_wireframe.rotation.y += 0.1;
 			break;
 		case "right":
 			cube.rotation.y -= 0.1;
+			cube_wireframe.rotation.y -= 0.1;
 			break;
 	}
 }
@@ -58,7 +71,14 @@ function rotateCube(direction) {
 // Function to toggle wireframe
 function toggleWireframe() {
 	wireframe = !wireframe;
-	cube.material.wireframe = wireframe;
+
+	if (wireframe) {
+		scene.add(cube_wireframe);
+		scene.remove(cube);
+	} else {
+		scene.add(cube);
+		scene.remove(cube_wireframe);
+	}
 }
 
 // Setup dat.GUI
