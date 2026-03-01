@@ -19,7 +19,20 @@ let angleY = 0; // Rotation around the Y-axis
 
 // Handle keyboard inputs
 function onKeyDown(event) {
-	// WRITE YOUR CODE HERE
+	switch (event.code) {
+		case "ArrowUp":
+			rotateCube("up");
+			break;
+		case "ArrowDown":
+			rotateCube("down");
+			break;
+		case "ArrowLeft":
+			rotateCube("left");
+			break;
+		case "ArrowRight":
+			rotateCube("right");
+			break;
+	}
 }
 
 window.addEventListener("keydown", onKeyDown);
@@ -70,3 +83,6 @@ function animate() {
 
 // Start the animation loop
 animate();
+
+// Event Listeners
+document.addEventListener("keydown", onKeyDown);
