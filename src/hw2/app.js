@@ -44,7 +44,8 @@ function rotateCube(direction) {
 
 // Function to toggle wireframe
 function toggleWireframe() {
-	// WRITE YOUR CODE HERE
+	wireframe = !wireframe;
+	cube.material.wireframe = wireframe;
 }
 
 // Setup dat.GUI
