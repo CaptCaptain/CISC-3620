@@ -7,6 +7,10 @@ document.body.appendChild(renderer.domElement);
 
 camera.position.z = 5;
 
+// Orbit Controls
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.update();
+
 // CREATE YOUR CUBE HERE
 const geometry = new THREE.BoxGeometry(2, 2, 2);
 const cube_materials = [
