@@ -33,9 +33,13 @@ cube.position.set(0, -1, 0);
 cube.castShadow = true;
 scene.add(cube);
 
+const floorTexture = new THREE.TextureLoader().load(
+	"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/refs/heads/master/courses/CISC3620/textures/concrete%20floor.jpg",
+);
+
 // Create a floor that receives shadows
 const floorGeometry = new THREE.PlaneGeometry(20, 20);
-const floorMaterial = new THREE.MeshStandardMaterial({ color: "gray" });
+const floorMaterial = new THREE.MeshStandardMaterial({ map: floorTexture });
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.rotation.x = -Math.PI / 2;
 floor.position.y = -2;
