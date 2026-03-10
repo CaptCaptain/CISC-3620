@@ -16,9 +16,13 @@ renderer.antialias = true; // Smooth out the edges
 document.body.appendChild(renderer.domElement);
 
 //WRITE CODE TO CREATE THE EARTH HERE
+const earthGeometry = new THREE.SphereGeometry(2, 25, 25);
 const earthTexture = textureLoader.load(
 	"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/master/courses/CISC3620/textures/earth%20texture.jpg",
 );
+const earthMaterial = new THREE.MeshStandardMaterial({ map: earthTexture });
+const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+scene.add(earth);
 
 //WRITE CODE TO CREATE THE MOON HERE
 const moonTexture = textureLoader.load(
@@ -26,10 +30,19 @@ const moonTexture = textureLoader.load(
 );
 
 //CREATE AMBIENT LIGHT HERE
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
+scene.add(ambientLight);
 
 //CREATE AND POSITION DIRECTIONAL LIGHT HERE
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(5, 5, 5);
+directionalLight.castShadow = true; // Enable shadow casting for the light
+scene.add(directionalLight);
 
 let moonOrbitAngle = 0; // Angle for the moon's orbit
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.update();
 
 function animate() {
 	requestAnimationFrame(animate);
