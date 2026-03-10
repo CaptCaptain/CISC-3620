@@ -62,7 +62,6 @@ function animate() {
 		earth.position.x - Math.sin(moonOrbitAngle) * moonOrbitalRadius;
 	moon.position.z =
 		earth.position.z + Math.cos(moonOrbitAngle) * moonOrbitalRadius;
-	moon.position.y = earth.position.y - Math.sin(moonOrbitAngle) / 5;
 	//WRITE CODE TO ROTATE THE MOON ON IT'S Y-AXIS BY 0.01 HERE
 	moon.rotation.y += 0.01;
 	renderer.render(scene, camera);
