@@ -16,7 +16,7 @@ renderer.antialias = true; // Smooth out the edges
 document.body.appendChild(renderer.domElement);
 
 //WRITE CODE TO CREATE THE EARTH HERE
-const earthGeometry = new THREE.SphereGeometry(2, 25, 25);
+const earthGeometry = new THREE.SphereGeometry(0.5, 25, 25);
 const earthTexture = textureLoader.load(
 	"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/master/courses/CISC3620/textures/earth%20texture.jpg",
 );
@@ -25,7 +25,7 @@ const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 scene.add(earth);
 
 //WRITE CODE TO CREATE THE MOON HERE
-const moonGeometry = new THREE.SphereGeometry(0.5, 25, 25);
+const moonGeometry = new THREE.SphereGeometry(0.25, 25, 25);
 const moonTexture = textureLoader.load(
 	"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/master/courses/CISC3620/textures/moon%20texture.jpg",
 );
@@ -58,9 +58,9 @@ function animate() {
 	const moonOrbitalRadius = 1.5; // Distance from the Earth
 
 	//WRITE CODE TO UPDATE MOON'S POSITION ON THE X AND Z-AXIS HERE
-
+	moon.position.x = earth.position.x + moonOrbitalRadius;
 	//WRITE CODE TO ROTATE THE MOON ON IT'S Y-AXIS BY 0.01 HERE
-	moon.rotation.y += 0.03;
+	moon.rotation.y += 0.01;
 	renderer.render(scene, camera);
 }
 
