@@ -25,9 +25,13 @@ const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 scene.add(earth);
 
 //WRITE CODE TO CREATE THE MOON HERE
+const moonGeometry = new THREE.SphereGeometry(0.5, 25, 25);
 const moonTexture = textureLoader.load(
 	"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/master/courses/CISC3620/textures/moon%20texture.jpg",
 );
+const moonMaterial = new THREE.MeshStandardMaterial({ map: moonTexture });
+const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+scene.add(moon);
 
 //CREATE AMBIENT LIGHT HERE
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
