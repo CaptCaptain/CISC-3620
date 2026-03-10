@@ -6,6 +6,7 @@ const camera = new THREE.PerspectiveCamera(
 	0.1,
 	1000,
 );
+const textureLoader = new THREE.TextureLoader();
 // Adjust camera position
 camera.position.z = 3;
 const renderer = new THREE.WebGLRenderer();
@@ -15,8 +16,14 @@ renderer.antialias = true; // Smooth out the edges
 document.body.appendChild(renderer.domElement);
 
 //WRITE CODE TO CREATE THE EARTH HERE
+const earthTexture = textureLoader.load(
+	"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/master/courses/CISC3620/textures/earth%20texture.jpg",
+);
 
 //WRITE CODE TO CREATE THE MOON HERE
+const moonTexture = textureLoader.load(
+	"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/master/courses/CISC3620/textures/moon%20texture.jpg",
+);
 
 //CREATE AMBIENT LIGHT HERE
 
