@@ -52,7 +52,7 @@ function animate() {
 	requestAnimationFrame(animate);
 
 	//WRITE CODE TO ROTATE THE EARTH ON IT'S Y-AXIS BY 0.03 HERE
-
+	earth.rotation.y += 0.03;
 	// Update Moon's position (Orbiting the Earth)
 	moonOrbitAngle -= 0.005; //counter clockwise
 	const moonOrbitalRadius = 1.5; // Distance from the Earth
@@ -60,7 +60,7 @@ function animate() {
 	//WRITE CODE TO UPDATE MOON'S POSITION ON THE X AND Z-AXIS HERE
 
 	//WRITE CODE TO ROTATE THE MOON ON IT'S Y-AXIS BY 0.01 HERE
-
+	moon.rotation.y += 0.03;
 	renderer.render(scene, camera);
 }
 
