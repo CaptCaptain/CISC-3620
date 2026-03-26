@@ -12,9 +12,19 @@ scene.background = new THREE.Color("skyblue");
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.update();
 
+function buildGUI() {
+	const gui = new dat.GUI();
+
+	// Position the dat.GUI above the buttons
+	gui.domElement.style.position = "absolute";
+	gui.domElement.style.top = "10px"; // Position it at the top left corner
+	gui.domElement.style.left = "10px"; // Align with left side
+}
+
 function animate() {
 	requestAnimationFrame(animate);
 	renderer.render(scene, camera);
 }
 
 animate();
+buildGUI();
