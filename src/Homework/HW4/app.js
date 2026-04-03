@@ -45,11 +45,15 @@ function buildRoom() {
 	backWall.rotation.y = 0;
 	scene.add(backWall);
 
+	const ceiling = floor.clone();
+	scene.add(ceiling);
+
 	floor.receiveShadows = true;
 	leftWall.receiveShadows = true;
 
 	return {
 		floor: floor,
+		ceiling: ceiling,
 		leftWall: leftWall,
 		rightWall: rightWall,
 		backWall: backWall,
@@ -67,6 +71,7 @@ function updateRoom(room) {
 	room.leftWall.position.set(-floorLength / 2, wallHeight, 0);
 	room.rightWall.position.set(floorLength / 2, wallHeight, 0);
 	room.backWall.position.set(0, wallHeight, -floorWidth / 2);
+	room.ceiling.position.set(0, wallHeight * 2, 0);
 }
 
 function buildGUI() {
