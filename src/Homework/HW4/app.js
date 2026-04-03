@@ -24,13 +24,23 @@ function buildWorld() {
 
 function buildRoom() {
 	const floor = new THREE.Mesh(
-		new THREE.PlaneGeometry(100, 100),
+		new THREE.BoxGeometry(100, 100),
 		new THREE.MeshStandardMaterial({ color: "pink", side: THREE.DoubleSide }),
 	);
 
+	scene.add(floor);
+
+	const wallGeometry = new THREE.BoxGeometry(100, 60);
+	const wallMaterial = new THREE.MeshStandardMaterial({ color: "pink" });
+
+	const leftWall = new THREE.Mesh(wallGeometry, wallMaterial);
+	leftWall.rotation.y = -Math.PI / 2;
+
+	scene.add(leftWall);
+
 	floor.rotation.x = -Math.PI / 2;
 
-	return { floor: floor };
+	return { floor: floor, leftWall: leftWall };
 }
 
 function buildGUI() {
@@ -51,8 +61,6 @@ function animate() {
 
 const world = buildWorld();
 const room = buildRoom();
-
-scene.add(room.floor);
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.update();
