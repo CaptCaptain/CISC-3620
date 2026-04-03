@@ -1,4 +1,4 @@
-const size = { width: 800, height: 500 };
+const windowSize = { width: 800, height: 500 };
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color("lightgreen");
@@ -8,7 +8,7 @@ camera.position.y = 10;
 camera.position.z = 10;
 
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize(size.width, size.height);
+renderer.setSize(windowSize.width, windowSize.height);
 document.body.appendChild(renderer.domElement);
 
 function buildWorld() {
