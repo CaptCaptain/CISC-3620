@@ -1,7 +1,7 @@
 const windowSize = { width: 800, height: 500 };
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color("lightgreen");
+scene.background = new THREE.Color("black");
 
 const camera = new THREE.PerspectiveCamera(50, 500 / 400, 0.1, 1000);
 camera.position.y = 100;
