@@ -26,17 +26,15 @@ function buildWorld() {
 }
 
 function buildRoom() {
-	const floor = new THREE.Mesh(
-		new THREE.BoxGeometry(100, 100),
-		new THREE.MeshStandardMaterial({ color: "pink", side: THREE.DoubleSide }),
-	);
+	const roomMaterial = new THREE.MeshStandardMaterial({ color: "pink" });
+
+	const floor = new THREE.Mesh(new THREE.BoxGeometry(100, 100), roomMaterial);
 
 	scene.add(floor);
 
 	const wallGeometry = new THREE.BoxGeometry(100, 60);
-	const wallMaterial = new THREE.MeshStandardMaterial({ color: "pink" });
 
-	const leftWall = new THREE.Mesh(wallGeometry, wallMaterial);
+	const leftWall = new THREE.Mesh(wallGeometry, roomMaterial);
 	leftWall.rotation.y = -Math.PI / 2;
 
 	scene.add(leftWall);
