@@ -64,9 +64,9 @@ function updateRoom(room) {
 	const floorWidth = floorBox.max.x - floorBox.min.x;
 	const floorLength = floorBox.max.z - floorBox.min.z;
 
-	room.leftWall.position.set(floorBox.min.x, wallHeight, 0);
-	room.rightWall.position.set(floorBox.max.x, wallHeight, 0);
-	room.backWall.position.set(0, wallHeight, floorBox.min.z);
+	room.leftWall.position.set(-floorLength / 2, wallHeight, 0);
+	room.rightWall.position.set(floorLength / 2, wallHeight, 0);
+	room.backWall.position.set(0, wallHeight, -floorWidth / 2);
 }
 
 function buildGUI() {
