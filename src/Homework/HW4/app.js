@@ -26,13 +26,13 @@ function buildRoom() {
 		new THREE.MeshStandardMaterial({ color: "pink", side: THREE.DoubleSide }),
 	);
 
+	floor.rotation.x = -Math.PI / 2;
+
 	return { floor: floor };
 }
 
 const world = buildWorld();
 const room = buildRoom();
-
-room.floor.rotation.x = -Math.PI / 2;
 
 scene.add(room.floor);
 
