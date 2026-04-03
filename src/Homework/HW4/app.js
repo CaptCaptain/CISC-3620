@@ -29,22 +29,22 @@ function buildRoom() {
 	const roomMaterial = new THREE.MeshStandardMaterial({ color: "pink" });
 
 	const floor = new THREE.Mesh(new THREE.BoxGeometry(100, 100), roomMaterial);
-
+	floor.rotation.x = -Math.PI / 2;
 	scene.add(floor);
 
 	const wallGeometry = new THREE.BoxGeometry(100, 60);
 
 	const leftWall = new THREE.Mesh(wallGeometry, roomMaterial);
 	leftWall.rotation.y = -Math.PI / 2;
-
 	scene.add(leftWall);
 
-	floor.rotation.x = -Math.PI / 2;
+	const rightWall = leftWall.clone();
+	scene.add(rightWall);
 
 	floor.receiveShadows = true;
 	leftWall.receiveShadows = true;
 
-	return { floor: floor, leftWall: leftWall };
+	return { floor: floor, leftWall: leftWall, rightWall: rightWall };
 }
 
 function updateRoom(room) {
@@ -56,6 +56,7 @@ function updateRoom(room) {
 	const floorLength = floorBox.max.z - floorBox.min.z;
 
 	room.leftWall.position.set(floorBox.min.x, wallHeight, 0);
+	room.rightWall.position.set(floorBox.max.x, wallHeight, 0);
 }
 
 function buildGUI() {
