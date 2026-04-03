@@ -4,8 +4,8 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color("lightgreen");
 
 const camera = new THREE.PerspectiveCamera(50, 500 / 400, 0.1, 1000);
-camera.position.y = 10;
-camera.position.z = 10;
+camera.position.y = 100;
+camera.position.z = 100;
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(windowSize.width, windowSize.height);
@@ -16,6 +16,9 @@ document.body.appendChild(renderer.domElement);
 function buildWorld() {
 	const ambientLight = new THREE.AmbientLight("white", 0.5); // soft overall light
 	scene.add(ambientLight);
+
+	const directionalLight = new THREE.DirectionalLight("white", 0.5); // soft overall light
+	scene.add(directionalLight);
 
 	return {
 		ambientLight: ambientLight,
@@ -40,7 +43,21 @@ function buildRoom() {
 
 	floor.rotation.x = -Math.PI / 2;
 
+	floor.receiveShadows = true;
+	leftWall.receiveShadows = true;
+
 	return { floor: floor, leftWall: leftWall };
+}
+
+function updateRoom(room) {
+	const wallBox = new THREE.Box3().setFromObject(room.leftWall);
+	const wallHeight = wallBox.max.y;
+
+	const floorBox = new THREE.Box3().setFromObject(room.floor);
+	const floorWidth = floorBox.max.x - floorBox.min.x;
+	const floorLength = floorBox.max.z - floorBox.min.z;
+
+	room.leftWall.position.set(floorBox.min.x, wallHeight, 0);
 }
 
 function buildGUI() {
@@ -67,3 +84,4 @@ controls.update();
 
 animate();
 buildGUI();
+updateRoom(room);
