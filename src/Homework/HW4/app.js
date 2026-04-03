@@ -11,6 +11,8 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(windowSize.width, windowSize.height);
 document.body.appendChild(renderer.domElement);
 
+// -- FUNCTIONS -- //
+
 function buildWorld() {
 	const ambientLight = new THREE.AmbientLight("white", 0.5); // soft overall light
 	scene.add(ambientLight);
@@ -31,14 +33,6 @@ function buildRoom() {
 	return { floor: floor };
 }
 
-const world = buildWorld();
-const room = buildRoom();
-
-scene.add(room.floor);
-
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.update();
-
 function buildGUI() {
 	const gui = new dat.GUI();
 
@@ -52,6 +46,16 @@ function animate() {
 	requestAnimationFrame(animate);
 	renderer.render(scene, camera);
 }
+
+// -- CODE -- //
+
+const world = buildWorld();
+const room = buildRoom();
+
+scene.add(room.floor);
+
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.update();
 
 animate();
 buildGUI();
