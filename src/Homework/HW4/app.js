@@ -9,16 +9,27 @@ camera.position.z = 100;
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(windowSize.width, windowSize.height);
+renderer.antialias = true;
+renderer.shadowMapEnabled = true;
+renderer.shadowMapType = THREE.PCFSoftShadowMa;
 document.body.appendChild(renderer.domElement);
+
+const modelLoader = new THREE.GLTFLoader();
 
 // -- FUNCTIONS -- //
 
 function buildWorld() {
-	const ambientLight = new THREE.AmbientLight("white", 0.5); // soft overall light
+	const ambientLight = new THREE.AmbientLight("white", 0.25); // soft overall light
 	scene.add(ambientLight);
 
-	const directionalLight = new THREE.DirectionalLight("white", 0.5); // soft overall light
+	const directionalLight = new THREE.DirectionalLight("white", 0.25); // soft overall light
+	directionalLight.castShadow = true;
 	scene.add(directionalLight);
+
+	const spotLight = new THREE.SpotLight(0xffffff, 0.5); // soft overall light
+	spotLight.position.set(0, 81, 0);
+	spotLight.castShadow = true;
+	scene.add(spotLight);
 
 	return {
 		ambientLight: ambientLight,
@@ -36,6 +47,8 @@ function buildRoom() {
 
 	const leftWall = new THREE.Mesh(wallGeometry, roomMaterial);
 	leftWall.rotation.y = -Math.PI / 2;
+	leftWall.receiveShadows = true;
+	leftWall.castShadows = true;
 	scene.add(leftWall);
 
 	const rightWall = leftWall.clone();
@@ -48,8 +61,8 @@ function buildRoom() {
 	const ceiling = floor.clone();
 	scene.add(ceiling);
 
+	floor.castShadows = true;
 	floor.receiveShadows = true;
-	leftWall.receiveShadows = true;
 
 	return {
 		floor: floor,
@@ -72,6 +85,16 @@ function updateRoom(room) {
 	room.rightWall.position.set(floorLength / 2, wallHeight, 0);
 	room.backWall.position.set(0, wallHeight, -floorWidth / 2);
 	room.ceiling.position.set(0, wallHeight * 2, 0);
+}
+
+function buildModels() {
+	modelLoader.load("/src/Homework/HW4/Models/desk.glb", function (gltf) {
+		const table = gltf.scene;
+		table.scale.set(50, 50, 50);
+		table.castShadows = true;
+		table.receiveShadows = true;
+		scene.add(table);
+	});
 }
 
 function buildGUI() {
@@ -99,3 +122,4 @@ controls.update();
 animate();
 buildGUI();
 updateRoom(room);
+buildModels();
