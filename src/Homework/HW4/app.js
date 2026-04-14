@@ -15,8 +15,22 @@ renderer.shadowMapType = THREE.PCFSoftShadowMa;
 document.body.appendChild(renderer.domElement);
 
 const modelLoader = new THREE.GLTFLoader();
+const textureLoader = new THREE.TextureLoader();
 
 // -- FUNCTIONS -- //
+
+function placeOnTop(object, surface) {
+	if (!object || !surface) console.warn("No object or surface");
+
+	//bounding boxes for object and surface
+	const objectBox = new THREE.Box3().setFromObject(object);
+	const surfaceBox = new THREE.Box3().setFromObject(surface);
+
+	//top of surface - bottom of obj = how high to lift obj to position atop surface
+	const offset = surfaceBox.max.y - objectBox.min.y;
+
+	object.position.y += offset;
+}
 
 function buildWorld() {
 	const ambientLight = new THREE.AmbientLight("white", 0.25);
@@ -98,10 +112,15 @@ function updateRoom(room) {
 	room.ceiling.position.set(0, wallHeight * 2, 0);
 }
 
-function buildModels() {
-	modelLoader.load("/src/Homework/HW4/Models/desk.glb", function (gltf) {
-		const table = gltf.scene;
+async function buildModels() {
+	let table;
+	let tv;
+	const furniture = new THREE.Group();
+
+	await modelLoader.load("/src/Homework/HW4/Models/desk.glb", function (gltf) {
+		table = gltf.scene;
 		table.scale.set(50, 50, 50);
+		table.position.x -= 15;
 		table.castShadows = true;
 		table.receiveShadows = true;
 
@@ -112,7 +131,71 @@ function buildModels() {
 			}
 		});
 		scene.add(table);
+		furniture.add(table);
+		placeOnTop(table, room.floor);
 	});
+
+	await modelLoader.load(
+		"/src/Homework/HW4/Models/televisionVintage.glb",
+		function (gltf) {
+			tv = gltf.scene;
+			tv.scale.set(50, 50, 50);
+			tv.position.x = table.position.x / 2;
+			tv.castShadows = true;
+			tv.receiveShadows = true;
+
+			tv.traverse((child) => {
+				if (child.isMesh) {
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			});
+			scene.add(tv);
+			furniture.add(tv);
+			placeOnTop(tv, table);
+		},
+	);
+
+	scene.add(furniture);
+
+	const woodTexture = textureLoader.load(
+		"https://raw.githubusercontent.com/amaraauguste/amaraauguste.github.io/refs/heads/master/courses/CISC3620/textures/wood%20floor.jpg",
+	);
+	const woodFloor = new THREE.Mesh(
+		new THREE.PlaneGeometry(50, 50),
+		new THREE.MeshStandardMaterial({ map: woodTexture }),
+	);
+	woodFloor.rotation.x = -Math.PI / 2;
+	placeOnTop(woodFloor, room.floor);
+	woodFloor.position.y += 0.05;
+	scene.add(woodFloor);
+
+	const length = 14,
+		width = 8;
+
+	const shape = new THREE.Shape();
+	shape.moveTo(0, 0);
+	shape.lineTo(0, width);
+	shape.lineTo(length, width);
+	shape.lineTo(length, 0);
+	shape.lineTo(0, 0);
+
+	const extrudeSettings = {
+		steps: 2,
+		amount: 16,
+		bevelEnabled: true,
+		bevelThickness: 1,
+		bevelSize: 1,
+		bevelSegments: 1,
+	};
+
+	const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+	const material = new THREE.MeshBasicMaterial({ color: "0xffffff" });
+	const mesh = new THREE.Mesh(geometry, material);
+	mesh.position.x -= length / 2;
+	mesh.position.z -= width / 2;
+	mesh.position.y = 60;
+	scene.add(mesh);
 }
 
 function buildGUI() {
@@ -122,6 +205,8 @@ function buildGUI() {
 	gui.domElement.style.position = "absolute";
 	gui.domElement.style.top = "10px"; // Position it at the top left corner
 	gui.domElement.style.left = "10px"; // Align with left side
+
+	return gui;
 }
 
 function animate() {
@@ -129,15 +214,31 @@ function animate() {
 	renderer.render(scene, camera);
 }
 
+function toggleLight(light, enabled) {
+	if (enabled) scene.add(light);
+	else scene.remove(light);
+}
+
 // -- CODE -- //
 
 const world = buildWorld();
+const models = buildModels();
 const room = buildRoom();
+const gui = buildGUI();
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.update();
 
 animate();
-buildGUI();
+gui.add({ "Ambient Light": true }, "Ambient Light").onChange((enabled) => {
+	toggleLight(world.ambientLight, enabled);
+});
+gui
+	.add({ "Directional Light": true }, "Directional Light")
+	.onChange((enabled) => {
+		toggleLight(world.directionalLight, enabled);
+	});
+gui.add({ "Spot Light": true }, "Spot Light").onChange((enabled) => {
+	toggleLight(world.spotLight, enabled);
+});
 updateRoom(room);
-buildModels();
