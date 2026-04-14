@@ -10,7 +10,7 @@ camera.position.z = 100;
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(windowSize.width, windowSize.height);
 renderer.antialias = true;
-renderer.shadowMapEnabled = true;
+renderer.shadowMap.enabled = true;
 renderer.shadowMapType = THREE.PCFSoftShadowMa;
 document.body.appendChild(renderer.domElement);
 
@@ -19,20 +19,31 @@ const modelLoader = new THREE.GLTFLoader();
 // -- FUNCTIONS -- //
 
 function buildWorld() {
-	const ambientLight = new THREE.AmbientLight("white", 0.25); // soft overall light
+	const ambientLight = new THREE.AmbientLight("white", 0.25);
 	scene.add(ambientLight);
 
-	const directionalLight = new THREE.DirectionalLight("white", 0.25); // soft overall light
+	const directionalLight = new THREE.DirectionalLight("white", 0.25);
 	directionalLight.castShadow = true;
-	scene.add(directionalLight);
+	directionalLight.position.set(20, 50, 50);
+	directionalLight.castShadow = true;
 
-	const spotLight = new THREE.SpotLight(0xffffff, 0.5); // soft overall light
-	spotLight.position.set(0, 81, 0);
+	directionalLight.shadow.camera.left = -100;
+	directionalLight.shadow.camera.right = 100;
+	directionalLight.shadow.camera.top = 100;
+	directionalLight.shadow.camera.bottom = -100;
+
+	scene.add(directionalLight);
+	scene.add(new THREE.DirectionalLightHelper(directionalLight));
+
+	const spotLight = new THREE.SpotLight(0xffffff, 0.25);
+	spotLight.position.set(0, 50, 0);
 	spotLight.castShadow = true;
 	scene.add(spotLight);
 
 	return {
 		ambientLight: ambientLight,
+		directionalLight: directionalLight,
+		spotLight: spotLight,
 	};
 }
 
@@ -93,6 +104,13 @@ function buildModels() {
 		table.scale.set(50, 50, 50);
 		table.castShadows = true;
 		table.receiveShadows = true;
+
+		table.traverse((child) => {
+			if (child.isMesh) {
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		});
 		scene.add(table);
 	});
 }
