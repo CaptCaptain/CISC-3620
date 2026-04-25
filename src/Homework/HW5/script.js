@@ -341,7 +341,14 @@ class SnowGlobe {
 
 // Position the camera
 camera.position.set(0, 5, 10);
-controls.update(); // Update controls
+controls.keys = {
+	LEFT: "KeyA", //left arrow
+	UP: "KeyW", // up arrow
+	RIGHT: "KeyD", // right arrow
+	BOTTOM: "KeyS", // down arrow
+};
+controls.enableDamping = true;
+controls.listenToKeyEvents(window);
 
 const stage = new Stage();
 const snowGlobe = new SnowGlobe();
@@ -351,6 +358,7 @@ function animate() {
 	requestAnimationFrame(animate);
 
 	snowGlobe.update();
+	controls.update();
 
 	// Render the scene
 	renderer.render(scene, camera);
