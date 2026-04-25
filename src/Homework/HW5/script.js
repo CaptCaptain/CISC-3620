@@ -348,6 +348,7 @@ controls.keys = {
 	BOTTOM: "KeyS", // down arrow
 };
 controls.enableDamping = true;
+controls.keyPanSpeed = 50;
 controls.listenToKeyEvents(window);
 
 const stage = new Stage();
