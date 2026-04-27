@@ -1,3 +1,7 @@
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);
 
@@ -9,7 +13,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 // Add lighting
-const ambientLight = new THREE.AmbientLight(0x404040, 1); // Soft white light
+const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white light
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(5, 5, 5);
@@ -21,10 +25,10 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const modelLoader = new THREE.GLTFLoader();
+const modelLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 
 class Stage {
 	floor;
@@ -313,18 +317,41 @@ class SnowGlobe {
 		// Sphere material
 		const sphereGeometry = new THREE.SphereGeometry(3, 32, 32);
 		const sphereMaterial = new THREE.MeshStandardMaterial({
-			color: "white", //white color
-			envMap: cubeRenderTarget.texture, //the environment map texture
-			metalness: 0.5,
+			metalness: 1,
 			roughness: 0,
-			refractionRatio: 0.5, //the ratio of the indices of refraction
-			transparent: true, //enable transparency
-			side: THREE.BackSide, //the side of the object to render
+			envMap: cubeRenderTarget.texture,
+			opacity: 0.5,
+			transparent: true,
+			side: THREE.BackSide,
 		});
 		const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 		sphere.position.y = 4; // Slightly above the plane
 
+		const refractiveMaterial = new THREE.MeshStandardMaterial({
+			color: "white",
+			metalness: 1,
+			roughness: 0,
+			envMap: cubeRenderTarget.texture,
+			side: THREE.BackSide,
+			opacity: 0.5,
+			transparent: true,
+		});
+
+		const reflectiveMaterial = new THREE.MeshPhongMaterial({
+			color: "white",
+			opacity: 0.25,
+			transparent: true,
+		});
+
+		const reflectiveSphere = new THREE.Mesh(sphereGeometry, reflectiveMaterial);
+		reflectiveSphere.position.y = 4; // Slightly above the plane
+
+		const refractiveSphere = new THREE.Mesh(sphereGeometry, refractiveMaterial);
+		refractiveSphere.position.y = 4; // Slightly above the plane
+
 		this.glass = sphere;
+		// scene.add(reflectiveSphere);
+		scene.add(refractiveSphere);
 	}
 
 	constructor() {
@@ -334,8 +361,6 @@ class SnowGlobe {
 		this.createSnow();
 		this.createSnowman();
 		this.createHouse();
-
-		scene.add(this.glass);
 	}
 }
 
