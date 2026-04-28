@@ -364,6 +364,13 @@ class SnowGlobe {
 	}
 }
 
+function handleInput(event) {
+	event.preventDefault();
+
+	if (event.key == "ArrowLeft") controls.rotateLeft(Math.PI / 4);
+	else if (event.key == "ArrowRight") controls.rotateLeft(-Math.PI / 4);
+}
+
 // Position the camera
 camera.position.set(0, 5, 10);
 controls.keys = {
@@ -391,3 +398,4 @@ function animate() {
 }
 
 animate();
+document.addEventListener("keydown", handleInput);
