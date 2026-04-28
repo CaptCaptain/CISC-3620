@@ -17,7 +17,8 @@ document.body.appendChild(renderer.domElement);
 // Position the camera
 camera.position.set(0, 0, 2);
 
-const clock = new THREE.Clock();
+const clock = new THREE.Timer();
+clock.connect(document);
 
 // Add Orbit Controls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -41,6 +42,7 @@ scene.add(particleFireMesh);
 function animate() {
 	requestAnimationFrame(animate);
 
+	clock.update();
 	const delta = clock.getDelta();
 
 	particleFireMesh.material.update(delta / 4);
