@@ -367,8 +367,12 @@ class SnowGlobe {
 function handleInput(event) {
 	event.preventDefault();
 
-	if (event.key == "ArrowLeft") controls.rotateLeft(Math.PI / 4);
-	else if (event.key == "ArrowRight") controls.rotateLeft(-Math.PI / 4);
+	if (event.key == "ArrowLeft") controls.rotateLeft(Math.PI / 8);
+	else if (event.key == "ArrowRight") controls.rotateLeft(-Math.PI / 8);
+	if (event.key == "ArrowUp") controls.rotateUp(Math.PI / 10);
+	else if (event.key == "ArrowDown") controls.rotateUp(-Math.PI / 10);
+	else if (event.key == "=") controls.dollyOut(1.25);
+	else if (event.key == "-") controls.dollyIn(1.25);
 }
 
 // Position the camera
