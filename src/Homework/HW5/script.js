@@ -17,11 +17,14 @@ const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white light
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(5, 5, 5);
+directionalLight.castShadow = true;
 
 scene.add(directionalLight);
 scene.add(ambientLight);
 
 const renderer = new THREE.WebGLRenderer();
+renderer.shadowMap.enabled = true;
+renderer.shadowMapType = THREE.PCFSoftShadowMap;
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
@@ -55,6 +58,7 @@ class Stage {
 		const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 		floor.rotation.x = -Math.PI / 2;
 		floor.position.y = 0; // Position it on the ground
+		floor.castShadow = true;
 		floor.receiveShadow = true;
 
 		this.floor = floor;
@@ -76,6 +80,8 @@ class Stage {
 
 		wall.rotation.x = 0;
 		wall.position.set(0, wallHeight, -floorWidth / 2);
+		wall.castShadow = true;
+		wall.receiveShadow = true;
 
 		this.wall = wall;
 	}
@@ -255,6 +261,8 @@ class SnowGlobe {
 		});
 		const cylinder = new THREE.Mesh(geometry, material);
 		cylinder.position.y += 1;
+		cylinder.castShadow = true;
+		cylinder.receiveShadow = true;
 		scene.add(cylinder);
 	}
 
@@ -292,6 +300,8 @@ class SnowGlobe {
 		});
 		const cylinder = new THREE.Mesh(geometry, material);
 		cylinder.position.y += 2;
+		cylinder.castShadow = true;
+		cylinder.receiveShadow = true;
 		scene.add(cylinder);
 	}
 
@@ -365,6 +375,8 @@ class SnowGlobe {
 
 		const pbrSphere = new THREE.Mesh(sphereGeometry, physicalMaterial);
 		pbrSphere.position.y = 4; // Slightly above the plane
+		pbrSphere.castShadow = true;
+		pbrSphere.receiveShadow = true;
 
 		this.glass = sphere;
 		// scene.add(reflectiveSphere);
