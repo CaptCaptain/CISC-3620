@@ -333,14 +333,28 @@ class SnowGlobe {
 			roughness: 0,
 			envMap: cubeRenderTarget.texture,
 			side: THREE.BackSide,
-			opacity: 0.5,
+			opacity: 1,
 			transparent: true,
 		});
 
-		const reflectiveMaterial = new THREE.MeshPhongMaterial({
+		const reflectiveMaterial = new THREE.MeshStandardMaterial({
 			color: "white",
+			envMap: cubeRenderTarget.texture,
+			metalness: 1,
+			roughness: 0,
 			opacity: 0.25,
 			transparent: true,
+		});
+
+		const physicalMaterial = new THREE.MeshPhysicalMaterial({
+			envMap: cubeRenderTarget.texture,
+			metalness: 1,
+			roughness: 0,
+			transmission: 1,
+			opacity: 0.5,
+			reflectivity: 1,
+			transparent: true,
+			side: THREE.BackSide,
 		});
 
 		const reflectiveSphere = new THREE.Mesh(sphereGeometry, reflectiveMaterial);
@@ -349,9 +363,13 @@ class SnowGlobe {
 		const refractiveSphere = new THREE.Mesh(sphereGeometry, refractiveMaterial);
 		refractiveSphere.position.y = 4; // Slightly above the plane
 
+		const pbrSphere = new THREE.Mesh(sphereGeometry, physicalMaterial);
+		pbrSphere.position.y = 4; // Slightly above the plane
+
 		this.glass = sphere;
 		// scene.add(reflectiveSphere);
-		scene.add(refractiveSphere);
+		// scene.add(refractiveSphere);
+		scene.add(pbrSphere);
 	}
 
 	constructor() {
