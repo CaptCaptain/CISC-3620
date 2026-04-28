@@ -226,37 +226,11 @@ class SnowGlobe {
 
 	createBase() {
 		const woodTexture = textureLoader.load(
-			"https://cdn.architextures.org/textures/20/11/dark-stained-timber-5fc4cb107f98c-1200.jpg",
+			"https://images.squarespace-cdn.com/content/v1/60a2d0d2a24b351d37e88e15/1668195782795-Q81IB3MQH2JF3GKO9FV5/OCS+-+227+RICH+CHERRY+CHERRY.jpg?format=1000w",
 		);
 		const geometry = new THREE.CylinderGeometry(2, 3, 2, 32);
-		const material = new THREE.ShaderMaterial({
-			uniforms: {
-				color1: {
-					value: new THREE.Color("#4B2E2B"),
-				},
-				color2: {
-					value: new THREE.Color("#8C5A3C"),
-				},
-			},
-			vertexShader: `
-				varying vec2 vUv;
-
-				void main() {
-				vUv = uv;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-				}
-			`,
-			fragmentShader: `
-				uniform vec3 color1;
-				uniform vec3 color2;
-			
-				varying vec2 vUv;
-				
-				void main() {
-				
-				gl_FragColor = vec4(mix(color1, color2, vUv.y), 1.0);
-				}
-			`,
+		const material = new THREE.MeshStandardMaterial({
+			map: woodTexture,
 			wireframe: false,
 		});
 		const cylinder = new THREE.Mesh(geometry, material);
