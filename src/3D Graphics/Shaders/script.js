@@ -44,7 +44,7 @@ const vertexShader = `
 
 // uniform = shared value (sent from JavaScript)
 
-//uniform float u_time;
+uniform float u_time;
 
 // varying passes data
 // vertex shader -> fragment shader
@@ -69,7 +69,7 @@ void main() {
  // gl_Position
  // final screen position
 
- //gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+ gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 
  // position.x
  // original X coordinate
@@ -79,26 +79,26 @@ void main() {
 
  // Create NEW coordinates
 
- /*vec3 newPosition = vec3(
+//  vec3 newPosition = vec3(
 
-   // NEW X POSITION
+//    // NEW X POSITION
 
-   sin(position.x),
+//    sin(position.x),
 
-   // KEEP ORIGINAL Y
+//    // KEEP ORIGINAL Y
 
-   position.y,
+//    position.y,
 
-   // KEEP ORIGINAL Z
+//    // KEEP ORIGINAL Z
 
-   position.z
+//    position.z
 
- );*/
+//  );
 
- // Render distorted position
- //gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+//  // Render distorted position
+//  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
  
- //vec3 pos = position;
+ vec3 pos = position;
 
  // pos.x * 4.0
  // increases wave frequency
@@ -109,15 +109,17 @@ void main() {
  // * 0.3
  // controls wave height
 
- //pos.y += sin(pos.x * 4.0 + u_time) * 0.3;
+ pos.x = sin(position.x),
 
- //gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+ pos.y += sin(pos.x * 4.0 + u_time) * (sin(u_time));
+
+ gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 
  // store UV coordinates
 
  vUv = uv;
 
- gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+//  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 
 
 
@@ -132,7 +134,7 @@ const fragmentShader = `
 
 // main() runs once PER PIXEL
 
-//uniform float u_time;
+uniform float u_time;
 
 // receive UV coordinates
 
@@ -165,17 +167,17 @@ void main() {
  // remaps to:
  // 0 and 1
 
- /*gl_FragColor = vec4(
+ gl_FragColor = vec4(
 
-   0.2,
+   sin(u_time) * 0.2 + 0.5,
 
-   sin(u_time) * 0.5 + 0.5,
+   sin(u_time) + 0.5,
 
-   1.0,
+   sin(u_time) * 1.0 + 0.25,
 
    1.0
 
- );*/
+ );
  
  // vUv.x
  // controls RED
@@ -184,18 +186,6 @@ void main() {
  // controls GREEN
 
  // blue stays constant
-
- gl_FragColor = vec4(
-
-   vUv.x,
-
-   vUv.y,
-
-   1.0,
-
-   1.0
-
- );
 
 
 
@@ -233,7 +223,7 @@ function animate() {
 
 	// update time every frame
 
-	//uniforms.u_time.value = clock.getElapsedTime();
+	uniforms.u_time.value = clock.getElapsedTime();
 
 	renderer.render(scene, camera);
 }
