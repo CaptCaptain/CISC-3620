@@ -47,6 +47,14 @@ scene.background = cubemap;
 scene.environment = cubemap;
 
 // Settings
+const modelPaths = {
+	Cube: null,
+	"Soda Can": "/src/Homework/HW6/Models/soda-can.glb",
+};
+const modelScales = {
+	Cube: 1,
+	"Soda Can": 5,
+};
 const waveSettings = {
 	waveSpeed: 2,
 	waveHeight: 1.5,
@@ -54,8 +62,55 @@ const waveSettings = {
 	cubeCount: 20,
 	reflective: false,
 	rotate: false,
-	meshType: 1,
+	meshType: "Cube",
 };
+
+const modelTemplates = {};
+
+function loadModelTemplate(type) {
+	const path = modelPaths[type];
+	if (!path) return Promise.resolve(null);
+	if (modelTemplates[type]) return Promise.resolve(modelTemplates[type]);
+
+	return new Promise((resolve, reject) => {
+		modelLoader.load(
+			path,
+			(gltf) => {
+				const template = gltf.scene;
+				template.traverse((child) => {
+					if (child.isMesh) {
+						child.castShadow = true;
+						child.receiveShadow = true;
+					}
+				});
+				modelTemplates[type] = template;
+				resolve(template);
+			},
+			undefined,
+			reject,
+		);
+	});
+}
+
+function cloneModelTemplate(type) {
+	const template = modelTemplates[type];
+	if (!template) return null;
+
+	const clone = template.clone(true);
+	clone.traverse((child) => {
+		if (child.isMesh) {
+			child.castShadow = true;
+			child.receiveShadow = true;
+			if (child.material) {
+				child.material = Array.isArray(child.material)
+					? child.material.map((mat) => mat.clone())
+					: child.material.clone();
+			}
+		}
+	});
+
+	return clone;
+}
 
 // Sine wave cubes
 const cubes = [];
@@ -88,25 +143,40 @@ const cubeReflectiveMaterial = new THREE.MeshPhysicalMaterial({
 
 const cubeSpacing = 1;
 
-function updateCubes() {
-	cubes.forEach((cube, index) => {
-		scene.remove(cube);
-		cube.geometry.dispose();
-		cube.material.dispose();
-	});
+async function updateCubes() {
+	cubes.forEach((object) => scene.remove(object));
+	cubes.length = 0;
+
+	const isCube = waveSettings.meshType === "Cube";
+	let modelTemplate = null;
+	if (!isCube) {
+		modelTemplate = await loadModelTemplate(waveSettings.meshType);
+		if (!modelTemplate) {
+			console.warn(`Model template not available: ${waveSettings.meshType}`);
+			return;
+		}
+	}
+
 	for (let i = 0; i < waveSettings.cubeCount; i++) {
-		const cube = new THREE.Mesh(
-			cubeGeometry,
-			waveSettings.reflective ? cubeReflectiveMaterial : cubeMaterial,
-		);
-		cube.castShadow = true;
-		cube.position.set(
-			(i - (waveSettings.cubeCount - 1) / 2) * cubeSpacing,
-			1,
-			0,
-		);
-		cubes.push(cube);
-		scene.add(cube);
+		const x = (i - (waveSettings.cubeCount - 1) / 2) * cubeSpacing;
+
+		if (isCube) {
+			const cube = new THREE.Mesh(
+				cubeGeometry,
+				waveSettings.reflective ? cubeReflectiveMaterial : cubeMaterial,
+			);
+			cube.castShadow = true;
+			cube.position.set(x, 1, 0);
+			cubes.push(cube);
+			scene.add(cube);
+		} else {
+			const clone = cloneModelTemplate(waveSettings.meshType);
+			if (!clone) continue;
+			clone.position.set(x, 1, 0);
+			clone.scale.setScalar(modelScales[waveSettings.meshType] || 1);
+			cubes.push(clone);
+			scene.add(clone);
+		}
 	}
 }
 
@@ -152,9 +222,9 @@ waveFolder
 		updateCubes();
 	});
 waveFolder
-	.add(waveSettings, "meshType", 1, 3, 1)
+	.add(waveSettings, "meshType", Object.keys(modelPaths))
 	.name("Mesh Type")
-	.onChange((enabled) => {
+	.onChange(() => {
 		updateCubes();
 	});
 waveFolder.open();
@@ -179,8 +249,6 @@ function animate() {
 			cube.rotation.y += 0.015;
 		}
 	});
-
-	cubeCamera.position.copy(cubes[0].position);
 
 	cubeCamera.update(renderer, scene);
 
