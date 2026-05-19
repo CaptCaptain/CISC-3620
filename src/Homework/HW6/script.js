@@ -12,11 +12,11 @@ const camera = new THREE.PerspectiveCamera(
 	1000,
 );
 
-// Model and Texture Loader
+// ===== Model and Texture Loader =====
 const modelLoader = new GLTFLoader();
 const textureLoader = new THREE.TextureLoader();
 
-// Add lighting
+// ===== Lighting =====
 const ambientLight = new THREE.AmbientLight(0xffffff, 1); // Soft white light
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -46,7 +46,7 @@ const cubemap = cubeTextureLoader.load([
 scene.background = cubemap;
 scene.environment = cubemap;
 
-// Settings
+// ===== Settings =====
 const modelPaths = {
 	Cube: null,
 	"Soda Can": "/src/Homework/HW6/Models/soda-can.glb",
@@ -134,6 +134,7 @@ const cubeCamera = new THREE.CubeCamera(near, far, cubeRenderTarget);
 
 scene.add(cubeCamera);
 
+// ===== Wave Mesh Setup =====
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshStandardMaterial({
 	color: 0x00aaff,
@@ -200,7 +201,7 @@ function toggleLight(light, enabled) {
 	else scene.remove(light);
 }
 
-// GUI
+// ===== GUI =====
 const gui = new dat.GUI();
 
 gui.domElement.style.position = "absolute";
@@ -245,7 +246,7 @@ meshFolder.open();
 
 updateCubes();
 
-// Animation loop
+// ===== Animation Loop =====
 function animate() {
 	requestAnimationFrame(animate);
 
