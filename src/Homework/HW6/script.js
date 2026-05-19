@@ -215,25 +215,29 @@ waveFolder
 	.onChange((enabled) => {
 		updateCubes();
 	});
-waveFolder
+waveFolder.open();
+
+const meshFolder = gui.addFolder("Mesh");
+
+meshFolder
 	.add(waveSettings, "meshType", Object.keys(modelPaths))
 	.name("Mesh Type")
 	.onChange(() => {
 		updateCubes();
 	});
-waveFolder
+meshFolder
 	.add(waveSettings, "reflective", false)
 	.name("Reflective")
 	.onChange((enabled) => {
 		updateCubes();
 	});
-waveFolder
+meshFolder
 	.add(waveSettings, "rotate", false)
 	.name("Rotate")
 	.onChange((enabled) => {
 		updateCubes();
 	});
-waveFolder.open();
+meshFolder.open();
 
 updateCubes();
 
