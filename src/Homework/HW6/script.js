@@ -51,11 +51,13 @@ const modelPaths = {
 	Cube: null,
 	"Soda Can": "/src/Homework/HW6/Models/soda-can.glb",
 	"Soy Sauce": "/src/Homework/HW6/Models/soy.glb",
+	Apple: "/src/Homework/HW6/Models/apple.glb",
 };
 const modelScales = {
 	Cube: 1,
 	"Soda Can": 5,
 	"Soy Sauce": 5,
+	Apple: 5,
 };
 const waveSettings = {
 	waveSpeed: 2,
