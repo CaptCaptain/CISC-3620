@@ -50,10 +50,12 @@ scene.environment = cubemap;
 const modelPaths = {
 	Cube: null,
 	"Soda Can": "/src/Homework/HW6/Models/soda-can.glb",
+	"Soy Sauce": "/src/Homework/HW6/Models/soy.glb",
 };
 const modelScales = {
 	Cube: 1,
 	"Soda Can": 5,
+	"Soy Sauce": 5,
 };
 const waveSettings = {
 	waveSpeed: 2,
@@ -152,7 +154,6 @@ async function updateCubes() {
 	if (!isCube) {
 		modelTemplate = await loadModelTemplate(waveSettings.meshType);
 		if (!modelTemplate) {
-			console.warn(`Model template not available: ${waveSettings.meshType}`);
 			return;
 		}
 	}
@@ -174,6 +175,11 @@ async function updateCubes() {
 			if (!clone) continue;
 			clone.position.set(x, 1, 0);
 			clone.scale.setScalar(modelScales[waveSettings.meshType] || 1);
+			clone.traverse((child) => {
+				if (child.isMesh && waveSettings.reflective) {
+					child.material = cubeReflectiveMaterial;
+				}
+			});
 			cubes.push(clone);
 			scene.add(clone);
 		}
@@ -210,6 +216,12 @@ waveFolder
 		updateCubes();
 	});
 waveFolder
+	.add(waveSettings, "meshType", Object.keys(modelPaths))
+	.name("Mesh Type")
+	.onChange(() => {
+		updateCubes();
+	});
+waveFolder
 	.add(waveSettings, "reflective", false)
 	.name("Reflective")
 	.onChange((enabled) => {
@@ -219,12 +231,6 @@ waveFolder
 	.add(waveSettings, "rotate", false)
 	.name("Rotate")
 	.onChange((enabled) => {
-		updateCubes();
-	});
-waveFolder
-	.add(waveSettings, "meshType", Object.keys(modelPaths))
-	.name("Mesh Type")
-	.onChange(() => {
 		updateCubes();
 	});
 waveFolder.open();
